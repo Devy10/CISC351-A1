@@ -13,7 +13,8 @@ Your program will write to the terminal: one printed list per problem. Output co
 ### Input/Output Formatting Example
 
 **Input File**:
-```
+
+```txt
 4
 5
 6
@@ -24,7 +25,8 @@ Your program will write to the terminal: one printed list per problem. Output co
 ```
 
 **Output**:
-```
+
+```python
 $ python3 run.py nqueens.txt
 [3, 1, 4, 2]
 [3, 1, 4, 2, 5]
