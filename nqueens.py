@@ -10,4 +10,6 @@ def solve(board_size):
     answer = list(range(1,board_size+1))
     random.shuffle(answer)
 
+    #hello world
+
     return answer
