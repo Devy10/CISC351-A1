@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-=======
-
-import random
-
->>>>>>> f9fb2d850cc9f1e0e3c3ec6a4d0d8e15ae5f6975
 # Implement a solver that returns a list of queen's locations
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
 def solve(board_size):
