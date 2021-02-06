@@ -4,6 +4,11 @@ import random as r
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
 def solve(board_size):
 
+    # Reads the input file "nqueens.txt"
+    f = open("nqueens.txt", "r")
+    if f.mode == "r":
+        contents = f.read()
+
     # Creating the board.
     board = [[0 for col in range(board_size)] for row in range(board_size)]
 
@@ -16,7 +21,7 @@ def solve(board_size):
 
     print(board)
 
-# Checks to see if a board space is available   
+# Checks to see if a board space is available
 def checkPos(row, col, board):
     # Checks row/column
     for i in range(len(board)):
@@ -40,14 +45,13 @@ def randomShuffle(n):
         while True:
             row = r.randint(0,n-1)
             col = r.randint(0,n-1)
-            
+
             if board[row][col] == 0:
                 board[row][col] = 1
                 break
-            
-            
-    return board
 
+
+    return board
 
 
 if __name__ == "__main__":
