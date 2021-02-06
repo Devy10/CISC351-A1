@@ -5,7 +5,7 @@ import random as r
 def solve(board_size):
 
     # Reads the input file "nqueens.txt"
-    f = open("nqueens.txt", "r")
+    f = open("input.txt", "r")
     if f.mode == "r":
         contents = f.read()
 
