@@ -1,5 +1,6 @@
 import random as r
 import time as t
+from typing import ByteString
 
 # Implement a solver that returns a list of queen's locations
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
@@ -19,10 +20,57 @@ def solve(board_size):
         board[i][i] = 1
 
     print(board)    
-    print(checkConflicts(0,0,board))  # Should be 3?
+    print(checkConflicts(0,0,board))
 
 def minConflicts(board, steps):
-    return True
+    for i in range(steps):
+        # Checks to see if the board is a solution before carrying on.
+        if solution(board):
+            return board
+
+        # Pick random variable of all chosen conflicting queens.
+        # queens is list of tuples (x,y).
+        queens = findQueens(board)
+        conflicting = []
+        for queen in queens:
+            if checkConflicts(queen[0],queen[1],board) > 0:
+                conflicting.append(queen)
+        # Queen picked at random
+        chosenOne = r.choice(conflicting)
+
+        # Pick coordinates for chosenOne that minimizes conflicts
+        best = checkConflicts(chosenOne)
+        row = chosenOne[0]
+        col = chosenOne[1]
+
+        # Gather a list of conflicts for entire column
+        conflicts = []
+        for i in range(len(board)):
+            conflicts.append(checkConflicts(i,col,board))
+        
+        # Index of smallest conflicts.
+        index = conflicts.index(min(conflicts))
+
+        # Move queen to new index
+        board[row][col] = 0
+        board[index][col] = 1
+        
+
+    # In the event no solution is found.
+    # TODO: Call a new board and redo the minConflicts().
+    return False
+
+# TODO: Find better way to do this
+def findQueens(board):
+    queens = []
+    b = len(board)
+    for i in range(b):
+        for j in range(b):
+            if board[i][j] == 1:
+                queens.append((i,j))
+    return queens
+
+        
 
 # Checks to see if a board space is available
 def checkConflicts(row, col, board):
@@ -62,7 +110,8 @@ def randomShuffle(n):
 
     return board
 
-def solution(board, boardSize):
+def solution(board):
+    boardSize = len(board)
     for x in range(1, boardSize + 1):
         for y in range(x + 1, boardSize + 1):
             if board[x-1] == board[y-1]:
