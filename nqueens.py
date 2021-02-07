@@ -21,6 +21,9 @@ def solve(board_size):
     board = randomShuffle(board_size)
     print(board)
 
+def minConflicts(board, steps):
+    return True
+
 # Checks to see if a board space is available
 # TODO: Change from checking if a position is valid to checking how many conflicts there are.
 def checkPos(row, col, board):
