@@ -54,12 +54,14 @@ def randomShuffle(n):
 
     return board
 
+#Check if the result is the solution of the problem
 def solution(board, boardSize):
+    #check the rows and columns
     for x in range(1, boardSize + 1):
         for y in range(x + 1, boardSize + 1):
             if board[x-1] == board[y-1]:
                 return False
-
+   #check the diagonals
     for i in range(1, boardSize + 1):
         j = i
         k = board[i - 1]
