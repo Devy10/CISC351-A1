@@ -1,47 +1,158 @@
-<<<<<<< HEAD
 import random
 
 import random as r
-import time as t
+import timeit
 
 # Implement a solver that returns a list of queen's locations
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
 def solve(board_size):
 
-    # This almost certainly is a wrong answer!
-    answer = list(range(1, board_size + 1))
-    random.shuffle(answer)
-
     # Creating the board.
     board = [[0 for col in range(board_size)] for row in range(board_size)]
-
-    # Initial config of queens on board.
     for i in range(len(board)):
         board[i][i] = 1
 
-    print(board)
-    board = randomShuffle(board_size)
-    print(board)
+    counter = 0;
+
+    start = timeit.default_timer()
 
     while True:
-        random.shuffle(answer)
-        if solution(answer, board_size):
-            return answer
+        board = randomShuffle(board_size)
+        board = initializeBoard(board)
+        for i in range(0, 60):
+            counter = counter + 1;
+            answer = converter(board, board_size)
+            if solution(answer, board_size):
+                stop = timeit.default_timer()
+                print("Swaps: " + str(counter) + " Time: " + str(stop - start))
+                return answer
+            queens = findQueens(board)
+            board = minConflicts(board, 1, queens)
+
+def initializeBoard(board):
+    queens = findQueens(board);
+    for i in range(len(board)):
+        row = queens[i][0]
+        column = queens[i][1]
+        minimumConflict = len(board)
+        rowList = []
+        for j in range(len(board)):
+            currentConflict = checkConflicts(j, column, board)
+            if currentConflict < minimumConflict:
+                minimumConflict = currentConflict
+                rowList = [j]
+            elif currentConflict == minimumConflict:
+                rowList.append(j)
+
+        newRow = r.choice(rowList)
+
+        board[row][column] = 0
+        board[newRow][column] = 1
+
+    return board
+
+
+def converter(board, boardSize):
+
+    rowVector = [];
+
+    for i in range(1, boardSize + 1):
+        for j in range(1, boardSize + 1):
+            if board[j-1][i-1] == 1:
+                rowVector.append(j);
+
+    return rowVector
 
 # Checks to see if a board space is available
-# TODO: Change from checking if a position is valid to checking how many conflicts there are.
-def checkPos(row, col, board):
+def minConflicts(board, steps, queens):
+    for i in range(steps):
+        # Checks to see if the board is a solution before carrying on.
+        #if solution(board):
+            #return board
+
+        random = r.choice(queens)
+        row = random[0]
+        column = random[1]
+        minimumConflict = len(board)
+        rowList = []
+
+        for j in range(0, len(board)):
+            currentConflict = checkConflicts(j, column, board)
+            if currentConflict < minimumConflict:
+                minimumConflict = currentConflict
+                rowList = [j]
+            elif currentConflict == minimumConflict:
+                rowList.append(j)
+
+        newRow = r.choice(rowList)
+
+        board[row][column] = 0
+        board[newRow][column] = 1
+
+        return board
+
+
+        # Pick random variable of all chosen conflicting queens.
+        # queens is list of tuples (x,y).
+        #queens = findQueens(board)
+        #conflicting = []
+        #for queen in queens:
+            #if checkConflicts(queen[0], queen[1], board) > 0:
+                #conflicting.append(queen)
+        # Queen picked at random
+        #chosenOne = r.choice(conflicting)
+
+        # Pick coordinates for chosenOne that minimizes conflicts
+        #best = checkConflicts(chosenOne)
+        #row = chosenOne[0]
+        #col = chosenOne[1]
+
+        # Gather a list of conflicts for entire column
+        #conflicts = []
+        #for i in range(len(board)):
+            #conflicts.append(checkConflicts(i, col, board))
+
+        # Index of smallest conflicts.
+        #index = conflicts.index(min(conflicts))
+
+        # Move queen to new index
+        #board[row][col] = 0
+        #board[index][col] = 1
+
+    # In the event no solution is found.
+    # TODO: Call a new board and redo the minConflicts().
+    #return False
+
+
+# TODO: Find better way to do this
+def findQueens(board):
+    queens = []
+    b = len(board)
+    for i in range(b):
+        for j in range(b):
+            if board[j][i] == 1:
+                queens.append((j, i))
+    return queens
+
+
+# Checks to see if a board space is available
+def checkConflicts(row, col, board):
+    conflicts = 0
     # Checks row/column
     for i in range(len(board)):
-        if board[row][i] == 1 or board[i][col]== 1:
-            return False
+        # Queen cannot conflict with itself
+        if board[row][i] == 1 and col != i:
+            conflicts += 1
+        #if board[i][col] == 1 and row != i:
+            #conflicts += 1
 
-        # Checks the diagonal
+        # For diagonals
         for j in range(len(board)):
-            if (i+j == row+col) or (i-j == row-col):
-                if board[i][j] == 1:
-                    return False
-    return True
+            if (row + col == i + j) or (row - col == i - j):
+                if board[i][j] == 1 and (i != row and j != col):
+                    conflicts += 1
+
+    return conflicts
 
 # Creates a new board with random placement of queens.
 def randomShuffle(n):
@@ -50,13 +161,14 @@ def randomShuffle(n):
 
     # Place n queens
     for i in range(n):
-        while True:
-            row = r.randint(0,n-1)
-            col = r.randint(0,n-1)
+        #while True:
+        row = r.randint(0,n-1)
+        board[row][i] = 1
+            #col = r.randint(0,n-1)
 
-            if board[row][col] == 0:
-                board[row][col] = 1
-                break
+            #if board[row][col] == 0:
+                #board[row][col] = 1
+                #break
 
 
     return board
