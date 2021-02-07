@@ -15,11 +15,11 @@ def solve(board_size):
 
     # Initial config of queens on board.
     for i in range(len(board)):
+        # Row[elem]
         board[i][i] = 1
 
-    print(board)
-    board = randomShuffle(board_size)
-    print(board)
+    print(board)    
+    print(checkConflicts(0,0,board))  # Should be 3?
 
 def minConflicts(board, steps):
     return True
@@ -29,14 +29,19 @@ def checkConflicts(row, col, board):
     conflicts = 0
     # Checks row/column
     for i in range(len(board)):
-        if board[row][i] == 1 or board[i][col]== 1:
+        # Queen cannot conflict with itself
+        if board[row][i] == 1 and col != i:
             conflicts += 1
-
-        # Checks the diagonal
+        if board[i][col] == 1 and row != i:
+            conflicts += 1
+        
+        # For diagonals
         for j in range(len(board)):
-            if (i+j == row+col) or (i-j == row-col):
-                if board[i][j] == 1:
+            if(row+col == i+j) or (row-col == i-j):
+                if board[i][j] == 1 and (i != row and j != col):
                     conflicts += 1
+
+
     return conflicts
 
 # Creates a new board with random placement of queens.
