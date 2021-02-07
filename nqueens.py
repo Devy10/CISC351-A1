@@ -1,4 +1,5 @@
 import random as r
+import time as t
 
 # Implement a solver that returns a list of queen's locations
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
@@ -18,10 +19,10 @@ def solve(board_size):
 
     print(board)
     board = randomShuffle(board_size)
-
     print(board)
 
 # Checks to see if a board space is available
+# TODO: Change from checking if a position is valid to checking how many conflicts there are.
 def checkPos(row, col, board):
     # Checks row/column
     for i in range(len(board)):
@@ -53,6 +54,42 @@ def randomShuffle(n):
 
     return board
 
+def solution(board, boardSize):
+    for x in range(1, boardSize + 1):
+        for y in range(x + 1, boardSize + 1):
+            if board[x-1] == board[y-1]:
+                return False
+
+    for i in range(1, boardSize + 1):
+        j = i
+        k = board[i - 1]
+        while j < boardSize and k < boardSize:
+            j = j + 1
+            k = k + 1
+            if board[j - 1] == k:
+                return False
+        j = i
+        k = board[i - 1]
+        while j < boardSize and k > 1:
+            j = j + 1
+            k = k - 1
+            if board[j - 1] == k:
+                return False
+        j = i
+        k = board[i - 1]
+        while j > 1 and k < boardSize:
+            j = j - 1
+            k = k + 1
+            if board[j - 1] == k:
+                return False
+        j = i
+        k = board[i - 1]
+        while j > 1 and k > 1:
+            j = j - 1
+            k = k - 1
+            if board[j - 1] == k:
+                return False
+    return True
 
 if __name__ == "__main__":
     solve(4)
