@@ -1,6 +1,5 @@
 import random as r
 import time as t
-from typing import ByteString
 
 # Implement a solver that returns a list of queen's locations
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
