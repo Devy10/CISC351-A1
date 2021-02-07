@@ -1,27 +1,72 @@
+<<<<<<< HEAD
 import random
 
+import random as r
+import time as t
 
 # Implement a solver that returns a list of queen's locations
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
 def solve(board_size):
-    print(board_size)
 
     # This almost certainly is a wrong answer!
     answer = list(range(1, board_size + 1))
     random.shuffle(answer)
+
+    # Creating the board.
+    board = [[0 for col in range(board_size)] for row in range(board_size)]
+
+    # Initial config of queens on board.
+    for i in range(len(board)):
+        board[i][i] = 1
+
+    print(board)
+    board = randomShuffle(board_size)
+    print(board)
 
     while True:
         random.shuffle(answer)
         if solution(answer, board_size):
             return answer
 
-    # hello world
-    # Aliya's comment
-    # James's comment
-    # Flora's comment - hello
+# Checks to see if a board space is available
+# TODO: Change from checking if a position is valid to checking how many conflicts there are.
+def checkPos(row, col, board):
+    # Checks row/column
+    for i in range(len(board)):
+        if board[row][i] == 1 or board[i][col]== 1:
+            return False
 
+        # Checks the diagonal
+        for j in range(len(board)):
+            if (i+j == row+col) or (i-j == row-col):
+                if board[i][j] == 1:
+                    return False
+    return True
+
+# Creates a new board with random placement of queens.
+def randomShuffle(n):
+    # Creates a new blank board
+    board = [[0 for col in range(n)] for row in range(n)]
+
+    # Place n queens
+    for i in range(n):
+        while True:
+            row = r.randint(0,n-1)
+            col = r.randint(0,n-1)
+
+            if board[row][col] == 0:
+                board[row][col] = 1
+                break
+
+
+    return board
 
 def solution(board, boardSize):
+    for x in range(1, boardSize + 1):
+        for y in range(x + 1, boardSize + 1):
+            if board[x-1] == board[y-1]:
+                return False
+
     for i in range(1, boardSize + 1):
         j = i
         k = board[i - 1]
@@ -40,7 +85,7 @@ def solution(board, boardSize):
         j = i
         k = board[i - 1]
         while j > 1 and k < boardSize:
-            j = j - i
+            j = j - 1
             k = k + 1
             if board[j - 1] == k:
                 return False
@@ -52,3 +97,6 @@ def solution(board, boardSize):
             if board[j - 1] == k:
                 return False
     return True
+
+if __name__ == "__main__":
+    solve(4)
