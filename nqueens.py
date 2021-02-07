@@ -25,19 +25,19 @@ def minConflicts(board, steps):
     return True
 
 # Checks to see if a board space is available
-# TODO: Change from checking if a position is valid to checking how many conflicts there are.
-def checkPos(row, col, board):
+def checkConflicts(row, col, board):
+    conflicts = 0
     # Checks row/column
     for i in range(len(board)):
         if board[row][i] == 1 or board[i][col]== 1:
-            return False
+            conflicts += 1
 
         # Checks the diagonal
         for j in range(len(board)):
             if (i+j == row+col) or (i-j == row-col):
                 if board[i][j] == 1:
-                    return False
-    return True
+                    conflicts += 1
+    return conflicts
 
 # Creates a new board with random placement of queens.
 def randomShuffle(n):
