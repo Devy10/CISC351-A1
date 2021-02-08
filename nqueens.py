@@ -8,28 +8,22 @@ import timeit
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
 def solve(board_size):
 
-    counter = 0;
-    
-    # Measures the starting execution time 
-    start = timeit.default_timer()
+   counter = 0;
 
-    while True:
-        board = randomShuffle(board_size) # Randomly places N queens on the board
-        board = initializeBoard(board) # Rearranges the positions of N-queens without any conflicts
-        
-        for i in range(0, 60):
-            counter = counter + 1;
-            answer = converter(board, board_size)
-            if solution(answer, board_size):
-                stop = timeit.default_timer() # Measures the stopping execution time
-                
-                # Prints runtime - how long it takes to perform a series of swaps
-                print("Swaps: " + str(counter) + " Time: " + str(stop - start)) 
-                return answer
-            
-            # A list determining the positions (i,j) of current queens on the board
-            queens = findQueens(board)
-            board = minConflicts(board, 1, queens)
+   start = timeit.default_timer()
+
+   while True:
+       board = list(range(1, board_size + 1))
+       random.shuffle(board)
+       board = initializeBoard(board_size)
+
+       for i in range(0, 5):
+           counter = counter + 1;
+           if solution(board, board_size):
+               stop = timeit.default_timer()
+               print("Swaps: " + str(counter) + " Time: " + str(stop - start))
+               return board
+           board = minConflicts(board, board_size)
 
 # TO REVISE!!
 
