@@ -45,7 +45,12 @@ def initializeBoard(boardSize):
 
     halfSize = int(boardSize / 2)
     
-    #initialize the board 
+    #initialize the board
+    #The general idea is reducing the problem to a knight's problem
+    #two knight could take over each other on a 3*2 or 2*3 board on the corner,
+    #if we switch the knights to queens, it will show that the queens are not conflicting with each other on row/column/diagonal
+    #The purpose of this part of algorithm is to repeat this process until the board has enough queens
+    #the situation will change according to the size of the board, each branch of the if statement shows a different case
     if boardSize % 6 == 2:
         board = [0] * (boardSize)
         for i in range(1, halfSize + 1):
@@ -69,6 +74,7 @@ def initializeBoard(boardSize):
             board.append(boardSize)
             
     #randomly pick some chess on the board
+    #shuffle them around to create conflicts with each other
     for i in range(0, 8):
         randomInt = r.choice(integerList)
         randomIndex = r.choice(integerList2)
