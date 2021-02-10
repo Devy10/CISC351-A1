@@ -113,7 +113,7 @@ def solution(board, boardSize):
     # no solution if no input for board
     if not board:
         return False
-    # no solution if the board is not balanced
+    # no solution if there is no queen on one or more rows
     if len(board) != len(set(board)):
         return False
 
@@ -123,7 +123,7 @@ def solution(board, boardSize):
     for i in range(0, boardSize):
         diagonal1.append(board[i] + i)
         diagonal2.append(board[i] - i)
-    # solution invalid if diagonal is missing some squares
+    # solution invalid if there is conflict in diagonal
     if len(diagonal1) != len(set(diagonal1)) or len(diagonal2) != len(set(diagonal2)):
         return False
 
