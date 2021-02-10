@@ -85,6 +85,7 @@ def minConflicts(board, boardSize, var):
     counterDiagonal1 = [0] * (2 * boardSize + 1)
     counterDiagonal2 = [0] * (2 * boardSize + 1)
     #initilze a raw board for conflict detection
+    #record the number of conflicts on rows and diagonals
     for i in range(boardSize):
         counterRow[board[i]] += 1
         counterDiagonal1[board[i] - i + boardSize] += 1
@@ -93,6 +94,8 @@ def minConflicts(board, boardSize, var):
     minimalConflictor = boardSize
     minimalRow = 0
     #loop though the list to see if there are still conflicting 
+    #add up the numbers in counterlists that indicates the amount of conflict
+    #if the conflict is 0 then the queen arrive at the final position
     for j in range(1, boardSize + 1):
         currentConflictor = counterRow[j]
         currentConflictor += counterDiagonal1[j - var[1] + boardSize]
@@ -114,6 +117,10 @@ def solution(board, boardSize):
     if not board:
         return False
     # no solution if there is no queen on one or more rows
+    #for set() it eliminates the elements with same value
+    #if the queens' are conflicting, they have the same value in the list
+    #set eliminate those value so that the length of set() is going to be different from the original list
+    #thus an conflict is found
     if len(board) != len(set(board)):
         return False
 
