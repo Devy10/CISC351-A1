@@ -31,8 +31,7 @@ def solve(board_size):
                 conflictList.remove(var)
 
 
-# TO REVISE!!
-
+# Initializes the chess board
 def initializeBoard(boardSize):
     #the board, represented by a list of Integer
     #each Integer represent the number of row for a queen on each column
