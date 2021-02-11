@@ -39,8 +39,7 @@ def solve(board_size):
                 conflictList.remove(var)
 
 
-# TO REVISE!!
-
+# Initializes the chess board
 def initializeBoard(boardSize):
     """Initializes the representation of the chess board.
 
