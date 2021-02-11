@@ -8,23 +8,31 @@ import timeit
 #  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
 def solve(board_size):
 
+    """Solves the n-queens problem given a board size n
+
+    Args:
+        board_size (int): The size of the n*n board containing n queens.
+
+    Returns:
+        board (int[]): A list where each element corresponds to the row of a queen.  It is 1-based.
+    """
+
     counter = 0;
-    #start timing
+    # Starts the timer.
     start = timeit.default_timer()
-    # loop until a solution is found
+    # Loop until a solution is found.
     while True:
         board, conflictList = initializeBoard(board_size)
-        #find the solution in 12 steps in a loop
-        for i in range(0, 12):
-            counter = counter + 1;
-            #detect if a solution is found
+        # The range here is the max_steps from the MINCONFLICTS() algorithm shown in the PDF.
+        for i in range(12):
+            counter += 1
+            # Checks to see if the board is a solution.
             if solution(board, board_size):
                 stop = timeit.default_timer()
-                #print out the running time and the board
+                # Prints out the running time and the board
                 print("Swaps: " + str(counter) + " Time: " + str(stop - start))
-                exit(0)
                 return board
-            #pick a conflicted chess
+            # If not a solution, chose a random conflicting Queen.
             var = r.choice(conflictList)
             board, conflicting = minConflicts(board, board_size, var)
             if not conflicting:
@@ -34,23 +42,32 @@ def solve(board_size):
 # TO REVISE!!
 
 def initializeBoard(boardSize):
-    #the board, represented by a list of Integer
-    #each Integer represent the number of row for a queen on each column
+    """Initializes the representation of the chess board.
+
+    Args:
+        boardSize (int): The size of the n*n board
+    
+    Returns:
+        board (int[]): The representation of the chess board
+        conflictList (int[(int, int)]): A list of tuples of type (int, int),
+                                        this gets passed on to the minConflicts() function.
+    """
+
     board = []
-    #the list of chess that conflicts with one or more another
+    # The list of Queens that conflict with each other.
     conflictList = []
-    #list of integers 
     integerList = list(range(1, boardSize + 1))
-    integerList2 = list(range(0, boardSize))
+    integerList2 = list(range(boardSize))
 
     halfSize = int(boardSize / 2)
     
-    #initialize the board
-    #The general idea is reducing the problem to a knight's problem
-    #two knight could take over each other on a 3*2 or 2*3 board on the corner,
-    #if we switch the knights to queens, it will show that the queens are not conflicting with each other on row/column/diagonal
-    #The purpose of this part of algorithm is to repeat this process until the board has enough queens
-    #the situation will change according to the size of the board, each branch of the if statement shows a different case
+    """
+    The general idea is reducing the problem to a knight's problem.
+    Two knights could take over each other on a 3*2 or 2*3 board on the corner,
+    if we switch the knights to queens, it will show that the queens are not conflicting with each other on row/column/diagonal.
+    The purpose of this part of algorithm is to repeat this process until the board has enough queens.
+    The situation will change according to the size of the board, each branch of the if statement shows a different case
+    """
     if boardSize % 6 == 2:
         board = [0] * (boardSize)
         for i in range(1, halfSize + 1):
@@ -73,9 +90,12 @@ def initializeBoard(boardSize):
         if boardSize % 2 == 1:
             board.append(boardSize)
             
-    #randomly pick some chess on the board
-    #shuffle them around to create conflicts with each other
-    for i in range(0, 8):
+    """
+    Randomly picks x Queens to shuffle, creating conflicts. 
+    This shows that our algorithm works, and it works well.
+    The higher the value of x, the more our algorithm has to work.
+    """
+    for i in range(8):
         randomInt = r.choice(integerList)
         randomIndex = r.choice(integerList2)
         board[randomIndex] = randomInt
@@ -84,14 +104,26 @@ def initializeBoard(boardSize):
     return board, conflictList
 
 
-# Checks to see if a board space is available
 def minConflicts(board, boardSize, var):
+    """Checks to see if a Queen is conflicting with any other Queens on the board.
+
+    Args:
+        board (int[])   : The representation of our chess board.
+        boardSize (int) : The size of the n*n chess board.
+        var ((int,int)) : An element of the conflictList list that initializeBoard() returns.
+
+    Returns:
+        board (int[])       : The representation of our chess board.
+        conflicting (bool)  : Whether the Queen is conflicting with another piece.
+    """
+
     conflicting = True
+    # Initializes a new board for conflict detection.
     counterRow = [0] * (boardSize + 1)
     counterDiagonal1 = [0] * (2 * boardSize + 1)
     counterDiagonal2 = [0] * (2 * boardSize + 1)
-    #initilze a raw board for conflict detection
-    #record the number of conflicts on rows and diagonals
+
+    # Gets the number of conflicts on rows/diagonals.
     for i in range(boardSize):
         counterRow[board[i]] += 1
         counterDiagonal1[board[i] - i + boardSize] += 1
@@ -99,44 +131,54 @@ def minConflicts(board, boardSize, var):
 
     minimalConflictor = boardSize
     minimalRow = 0
-    #loop though the list to see if there are still conflicting 
-    #add up the numbers in counterlists that indicates the amount of conflict
-    #if the conflict is 0 then the queen arrive at the final position
-    for j in range(1, boardSize + 1):
-        currentConflictor = counterRow[j]
-        currentConflictor += counterDiagonal1[j - var[1] + boardSize]
-        currentConflictor += counterDiagonal2[j + var[1]]
+    
+    # Loops through the board, adding the conflicts on each row and diagonal.
+    for i in range(1, boardSize + 1):
+        currentConflictor = counterRow[i]
+        currentConflictor += counterDiagonal1[i - var[1] + boardSize]
+        currentConflictor += counterDiagonal2[i + var[1]]
         if (currentConflictor < minimalConflictor):
             minimalConflictor = currentConflictor
-            minimalRow = j
-    #move the conflicted chess to a row with minimum conflicts
+            minimalRow = i
+    # Moves the Queen to the row with minimal conflicts.
     board[var[1]] = minimalRow
+
+    # Checks to see if there is still a conflict after the move.
     if minimalConflictor == 0:
         conflicting = False
 
     return board, conflicting
 
 
-# Check if the result is the solution of the problem
 def solution(board, boardSize):
-    # no solution if no input for board
+
+    """Checks to see if the board is a solution.
+
+    Args:
+        board (int[])   : The representation of the chess board.
+        boardSize (int) : The size of the n*n chess board.
+    """
+
+    # If there is no board, no solution.
     if not board:
         return False
-    # no solution if there is no queen on one or more rows
-    #for set() it eliminates the elements with same value
-    #if the queens' are conflicting, they have the same value in the list
-    #set eliminate those value so that the length of set() is going to be different from the original list
-    #thus an conflict is found
+   
+    """
+    The set() function removes duplicates (turns a list into a set).
+    For a board to be a solution, there needs to be exactly one Queen on every row & column.
+    So if the length of the board is the same as the length of the set of the board, that means all elements are unique.
+    """
     if len(board) != len(set(board)):
         return False
 
     diagonal1 = []
     diagonal2 = []
-    #checking the diagonals
+
+    # Checks the diagonals.
     for i in range(0, boardSize):
         diagonal1.append(board[i] + i)
         diagonal2.append(board[i] - i)
-    # solution invalid if there is conflict in diagonal
+    # This is for the same reason as above.
     if len(diagonal1) != len(set(diagonal1)) or len(diagonal2) != len(set(diagonal2)):
         return False
 
