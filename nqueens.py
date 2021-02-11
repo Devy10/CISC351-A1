@@ -22,14 +22,14 @@ def solve(board_size):
     while True:
         board, conflictList = initializeBoard(board_size)
         # The range here is the max_steps from the MINCONFLICTS() algorithm shown in the PDF.
-        for i in range(12):
+        for i in range(100):
             counter += 1
             # Checks to see if the board is a solution.
             if solution(board, board_size):
                 stop = timeit.default_timer()
                 # Prints out the running time and the board
-                print("Swaps: " + str(counter) + " Time: " + str(stop - start))
-                return board
+                print("n: " + str(board_size) + " Time: " + str(stop - start))
+                return True
             # If not a solution, chose a random conflicting Queen.
             var = r.choice(conflictList)
             board, conflicting = minConflicts(board, board_size, var)
@@ -91,7 +91,7 @@ def initializeBoard(boardSize):
     This shows that our algorithm works, and it works well.
     The higher the value of x, the more our algorithm has to work.
     """
-    for i in range(8):
+    for i in range(15):
         randomInt = r.choice(integerList)
         randomIndex = r.choice(integerList2)
         board[randomIndex] = randomInt
