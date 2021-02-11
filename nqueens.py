@@ -4,8 +4,6 @@ import random as r
 import timeit
 
 
-# Implement a solver that returns a list of queen's locations
-#  - Make sure the list is the right length, and uses the numbers from 0 .. BOARD_SIZE-1
 def solve(board_size):
 
     """Solves the n-queens problem given a board size n
@@ -39,7 +37,6 @@ def solve(board_size):
                 conflictList.remove(var)
 
 
-# Initializes the chess board
 def initializeBoard(boardSize):
     """Initializes the representation of the chess board.
 
