@@ -1,7 +1,10 @@
-import random
-
 import random as r
 import timeit
+
+# For testing
+# TODO: Remove before final copy.
+maxSteps = 100
+shuffleQ = 8
 
 
 def solve(board_size):
@@ -22,7 +25,7 @@ def solve(board_size):
     while True:
         board, conflictList = initializeBoard(board_size)
         # The range here is the max_steps from the MINCONFLICTS() algorithm shown in the PDF.
-        for i in range(100):
+        for i in range(maxSteps):
             counter += 1
             # Checks to see if the board is a solution.
             if solution(board, board_size):
@@ -91,7 +94,7 @@ def initializeBoard(boardSize):
     This shows that our algorithm works, and it works well.
     The higher the value of x, the more our algorithm has to work.
     """
-    for i in range(15):
+    for i in range(shuffleQ):
         randomInt = r.choice(integerList)
         randomIndex = r.choice(integerList2)
         board[randomIndex] = randomInt
