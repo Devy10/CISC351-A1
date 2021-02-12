@@ -1,11 +1,6 @@
 import random as r
 import timeit
 
-# For testing
-# TODO: Remove before final copy.
-maxSteps = 100
-shuffleQ = 8
-
 
 def solve(board_size):
 
@@ -25,14 +20,14 @@ def solve(board_size):
     while True:
         board, conflictList = initializeBoard(board_size)
         # The range here is the max_steps from the MINCONFLICTS() algorithm shown in the PDF.
-        for i in range(maxSteps):
+        for i in range(100):
             counter += 1
             # Checks to see if the board is a solution.
             if solution(board, board_size):
                 stop = timeit.default_timer()
                 # Prints out the running time and the board
-                print("n: " + str(board_size) + " Time: " + str(stop - start))
-                return True
+                print("Steps" + str(counter) + " Time: " + str(stop - start))
+                return board
             # If not a solution, chose a random conflicting Queen.
             var = r.choice(conflictList)
             board, conflicting = minConflicts(board, board_size, var)
@@ -94,7 +89,7 @@ def initializeBoard(boardSize):
     This shows that our algorithm works, and it works well.
     The higher the value of x, the more our algorithm has to work.
     """
-    for i in range(shuffleQ):
+    for i in range(8):
         randomInt = r.choice(integerList)
         randomIndex = r.choice(integerList2)
         board[randomIndex] = randomInt
