@@ -13,7 +13,7 @@ def solve(board_size):
 
     while True:
         board, conflictList = initializeBoard(board_size)
-        for i in range(0, 12):
+        for i in range(0, 20):
             counter = counter + 1;
             if solution(board, board_size):
                 stop = timeit.default_timer()
@@ -58,7 +58,9 @@ def initializeBoard(boardSize):
         if boardSize % 2 == 1:
             board.append(boardSize)
 
-    for i in range(0, 8):
+    print(board)
+
+    for i in range(0, 10):
         randomInt = r.choice(integerList)
         randomIndex = r.choice(integerList2)
         board[randomIndex] = randomInt
