@@ -41,7 +41,7 @@ Headers are going to be tuples of values, (`max_steps`, `shuffled_queens`)
 
 ### Note: Seems to be unstable over `max-steps = 1000`.  
 
-Since it appears that keeping `max-steps` at 1000 gives us the fastest time, now we have to see how high we can crank `shuffled-queens` to really see how hard we can push the algorithm.
+Since it appears that keeping `max-steps` at 100 gives us the fastest time and most stable time, now we have to see how high we can crank `shuffled-queens` to really see how hard we can push the algorithm.
 
 ## (100, 15)
 
@@ -54,3 +54,5 @@ Since it appears that keeping `max-steps` at 1000 gives us the fastest time, now
 | 100,000       | 31.439        |
 | 1,000,000     | 224.88        |
 | 10,000,000    | 1191.7        |
+
+Since we are unsure if we need to do 10M, we decided to leave `max-steps = 100` and `shuffled-queens = 8`, since it gave good results and will work well on most hardware.
