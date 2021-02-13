@@ -1,9 +1,5 @@
 import random as r
 
-# parameter initializations
-maxSteps = 20
-shuffleQ = 8
-
 
 def solve(board_size):
 
@@ -15,12 +11,15 @@ def solve(board_size):
     Returns:
         board (int[]): A list where each element corresponds to the row of a queen.  It is 1-based.
     """
+    # Declares the max steps for the minConflicts algorithm.
+    maxSteps = 20
 
     # Loop until a solution is found.
     while True:
 
         # the board is initialized and returned along with a list of conflicting queen positions
         board, conflictList = initializeBoard(board_size)
+        
 
         # The range here is the max_steps from the min-conflicts algorithm shown in the PDF.
         for i in range(maxSteps):
@@ -192,7 +191,7 @@ def solution(board, boardSize):
     diagonal1 = []
     diagonal2 = []
 
-    # Checks the diagonals.
+    # The hills & dales of each Queen are calculated.
     for i in range(0, boardSize):
         diagonal1.append(board[i] + i)
         diagonal2.append(board[i] - i)
