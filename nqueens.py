@@ -1,5 +1,6 @@
 import random as r
 
+
 # parameter initializations
 maxSteps = 20
 shuffleQ = 8
@@ -99,7 +100,7 @@ def initializeBoard(boardSize):
     This shows that our algorithm works, and it works well.
     The higher the value of x, the more our algorithm has to work.
     """
-    for i in range(shuffleQ):
+    for i in range(8):
         randomInt = r.choice(integerList)
         randomIndex = r.choice(integerList2)
         board[randomIndex] = randomInt
