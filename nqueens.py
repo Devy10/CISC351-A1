@@ -1,6 +1,5 @@
 import random as r
 
-
 # parameter initializations
 maxSteps = 20
 shuffleQ = 8
@@ -19,6 +18,7 @@ def solve(board_size):
 
     # Loop until a solution is found.
     while True:
+
         # the board is initialized and returned along with a list of conflicting queen positions
         board, conflictList = initializeBoard(board_size)
 
@@ -56,6 +56,7 @@ def initializeBoard(boardSize):
                                         this gets passed on to the minConflicts() function.
     """
 
+    # board list is initialized
     board = []
 
     # The list of Queens that conflict with each other.
@@ -63,14 +64,15 @@ def initializeBoard(boardSize):
     integerList = list(range(1, boardSize + 1))
     integerList2 = list(range(boardSize))
 
+    # variable to represent half the size of the board (if the size is odd, it takes the floor as it should)
     halfSize = int(boardSize / 2)
     
     """
-    The general idea is reducing the problem to a knight's problem.
-    Two knights could take over each other on a 3*2 or 2*3 board on the corner,
-    if we switch the knights to queens, it will show that the queens are not conflicting with each other on row/column/diagonal.
-    The purpose of this part of algorithm is to repeat this process until the board has enough queens.
-    The situation will change according to the size of the board, each branch of the if statement shows a different case
+    The general idea is reducing the problem to a knight's problem. Two knights could take over each other on a 3*2 or 
+    2*3 board on the corner, if we switch the knights to queens, it will show that the queens are not conflicting with 
+    each other on row/column/diagonal. The purpose of this part of algorithm is to repeat this process until the board 
+    has enough queens. The situation will change according to the size of the board, each branch of the if statement 
+    shows a different case.
     """
     if boardSize % 6 == 2:
         board = [0] * (boardSize)
@@ -99,6 +101,7 @@ def initializeBoard(boardSize):
     Randomly picks x Queens to shuffle, creating conflicts. 
     This shows that our algorithm works, and it works well.
     The higher the value of x, the more our algorithm has to work.
+    We decided to let x = 8 in honour of "the eight queens problem"
     """
     for i in range(8):
         randomInt = r.choice(integerList)
@@ -194,8 +197,9 @@ def solution(board, boardSize):
         diagonal1.append(board[i] + i)
         diagonal2.append(board[i] - i)
 
-    # This is for the same reason as above.
+    # The diagonals are checked the same way that the rows are checked
     if len(diagonal1) != len(set(diagonal1)) or len(diagonal2) != len(set(diagonal2)):
         return False
 
+    # The solution works if it passed all the previous requirements
     return True
